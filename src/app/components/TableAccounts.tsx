@@ -105,10 +105,6 @@ export function TableAccounts() {
   );
 }
 
-function Type({ type }) {
-  return <></>;
-}
-
 function TableActions() {
   return (
     <>

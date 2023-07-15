@@ -1,5 +1,7 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -10,20 +12,29 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
-import { FormNewTransaction } from "./FormNewTransaction";
 import { Form } from "~/components/ui/form";
-import { useForm } from "react-hook-form";
+import { newTransaction } from "../action";
+import { FormNewTransaction } from "./FormNewTransaction";
+import { useState, useTransition } from "react";
+import { newTransactionSchema } from "../schema";
+import { useRouter } from "next/navigation";
 
 export function DialogNewTransaction() {
-  const methods = useForm();
+  const methods = useForm({ resolver: zodResolver(newTransactionSchema) });
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+
+  const [open, setOpen] = useState(false);
 
   function handleSubmit(data: any) {
-    console.log("Form", data);
+    startTransition(async () => {
+      await newTransaction(data);
+      router.refresh();
+      setOpen(false);
+    });
   }
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">New transaction</Button>
       </DialogTrigger>
@@ -41,6 +52,7 @@ export function DialogNewTransaction() {
               <Button
                 type="submit"
                 onClick={methods.handleSubmit(handleSubmit)}
+                disabled={isPending}
               >
                 Save changes
               </Button>

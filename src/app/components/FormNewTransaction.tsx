@@ -14,7 +14,6 @@ import { RadioInput } from "~/components/custom/RadioInput";
 import { DatePickerInput } from "~/components/custom/DatePickerInput";
 
 export function FormNewTransaction() {
-  const methods = useForm();
   return (
     <div className="grid gap-4 py-4">
       <FormField
@@ -30,10 +29,10 @@ export function FormNewTransaction() {
         )}
       />
       <FormField
-        name="ammount"
+        name="amount"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Ammount</FormLabel>
+            <FormLabel>Amount</FormLabel>
             <FormControl>
               <Input {...field} />
             </FormControl>
@@ -42,7 +41,7 @@ export function FormNewTransaction() {
         )}
       />
       <FormField
-        name="date"
+        name="createdAt"
         render={({ field }) => (
           <FormItem className="flex flex-col">
             <FormLabel>Date</FormLabel>
@@ -52,7 +51,7 @@ export function FormNewTransaction() {
         )}
       />
       <FormField
-        name="trasaction-type"
+        name="type"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Type</FormLabel>

@@ -19,53 +19,13 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { Button } from "~/components/ui/button";
 import { format } from "date-fns";
+import { prisma } from "~/utils/prisma";
 
-const transactions = [
-  {
-    description: "Phone Bill",
-    type: "payment",
-    amount: "$250.00",
-    date: new Date(),
-  },
-  {
-    description: "Credit Card Payment",
-    type: "payment",
-    amount: "$150.00",
-    date: new Date(),
-  },
-  {
-    description: "Car Loan Installment",
-    type: "payment",
-    amount: "$350.00",
-    date: new Date(),
-  },
-  {
-    description: "Rent Payment",
-    type: "payment",
-    amount: "$450.00",
-    date: new Date(),
-  },
-  {
-    description: "Product Sales",
-    type: "receivement",
-    amount: "$550.00",
-    date: new Date(),
-  },
-  {
-    description: "Electricity Bill",
-    type: "payment",
-    amount: "$200.00",
-    date: new Date(),
-  },
-  {
-    description: "Rental Income",
-    type: "receivement",
-    amount: "$300.00",
-    date: new Date(),
-  },
-];
+export async function TableAccounts() {
+  const transactions = await prisma.transaction.findMany({
+    include: { category: true },
+  });
 
-export function TableAccounts() {
   return (
     <>
       <Table>
@@ -73,7 +33,7 @@ export function TableAccounts() {
         <TableHeader>
           <TableRow>
             <TableHead>Desciption</TableHead>
-            {/* <TableHead>Type</TableHead> */}
+            <TableHead>Category</TableHead>
             <TableHead>Date</TableHead>
             <TableHead className="text-right">Amount</TableHead>
           </TableRow>
@@ -84,14 +44,14 @@ export function TableAccounts() {
               <TableCell className="font-medium">
                 {transaction.description}
               </TableCell>
-              {/* <TableCell>{transaction.type}</TableCell> */}
-              <TableCell>{format(transaction.date, "PPP")}</TableCell>
+              <TableCell>{transaction.category.description}</TableCell>
+              <TableCell>{format(transaction.createdAt, "PPP")}</TableCell>
               <TableCell className="text-right">
                 <span
                   data-type={transaction.type}
-                  className="data-[type=payment]:text-red-500 data-[type=receivement]:text-green-500 data-[type=payment]:before:content-['-']"
+                  className="data-[type=PAYMENT]:text-red-500 data-[type=RECEIVEMENT]:text-green-500 data-[type=PAYMENT]:before:content-['-']"
                 >
-                  {transaction.amount}
+                  {transaction.amount.toNumber().toFixed(2)}
                 </span>
               </TableCell>
               <TableCell className="text-center">

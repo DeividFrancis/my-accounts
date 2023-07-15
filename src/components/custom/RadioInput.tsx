@@ -15,11 +15,11 @@ export const RadioInput = React.forwardRef<
       className={cn("grid grid-cols-2", className)}
       {...props}
     >
-      <RadioItem value="payment">
+      <RadioItem value="PAYMENT">
         <ArrowDown className="text-red-500" />
         <p className="text-slate-500">Payment</p>
       </RadioItem>
-      <RadioItem value="receivement">
+      <RadioItem value="RECEIVEMENT">
         <ArrowUp className="text-green-500" />
         <p className="text-slate-500">Receivement</p>
       </RadioItem>

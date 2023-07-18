@@ -4,10 +4,7 @@ import { CardBilling } from "~/components/custom/CardBilling";
 import { DialogNewTransaction } from "~/components/custom/DialogNewTransaction";
 import { ModeToggle } from "~/components/ui/mode-toggle";
 
-export default function Layout({
-  children,
-  modal,
-}: PropsWithChildren<{ modal: any }>) {
+export default function Layout({ children }: PropsWithChildren) {
   return (
     <main className="container">
       <header className="flex justify-between py-4">

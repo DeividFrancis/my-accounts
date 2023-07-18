@@ -23,12 +23,16 @@ export interface ITransaction {
 }
 
 async function fetchAll() {
-  const req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transaction`, {
-    cache: "no-cache",
-  });
-  const res = await req.json();
+  try {
+    const req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transaction`, {
+      cache: "no-cache",
+    });
+    const res = await req.json();
 
-  return res.data as ITransaction[];
+    return res.data as ITransaction[];
+  } catch (error) {
+    return [] as ITransaction[];
+  }
 }
 
 async function save(body: NewTransactionParams) {

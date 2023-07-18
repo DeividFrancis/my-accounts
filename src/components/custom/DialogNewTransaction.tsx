@@ -13,11 +13,11 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import { Form } from "~/components/ui/form";
-import { newTransaction } from "../action";
 import { FormNewTransaction } from "./FormNewTransaction";
 import { useState, useTransition } from "react";
-import { newTransactionSchema } from "../schema";
+import { newTransactionSchema } from "../../app/transaction/schema";
 import { useRouter } from "next/navigation";
+import TransactionService from "~/services/TransactionService";
 
 export function DialogNewTransaction() {
   const methods = useForm({ resolver: zodResolver(newTransactionSchema) });
@@ -28,7 +28,7 @@ export function DialogNewTransaction() {
 
   function handleSubmit(data: any) {
     startTransition(async () => {
-      await newTransaction(data);
+      await TransactionService.save(data);
       router.refresh();
       setOpen(false);
     });

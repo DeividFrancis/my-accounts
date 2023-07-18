@@ -34,7 +34,7 @@ export function FormNewTransaction() {
           <FormItem>
             <FormLabel>Amount</FormLabel>
             <FormControl>
-              <Input {...field} />
+              <Input {...field} type="number" />
             </FormControl>
             <FormMessage />
           </FormItem>

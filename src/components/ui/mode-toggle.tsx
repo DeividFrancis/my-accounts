@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { AlertDeleteTransaction } from "../custom/AlertDeleteTransaction";
 
 export function ModeToggle() {
   const { setTheme } = useTheme();
@@ -34,6 +35,7 @@ export function ModeToggle() {
         <DropdownMenuItem onClick={() => setTheme("system")}>
           System
         </DropdownMenuItem>
+        <AlertDeleteTransaction />
       </DropdownMenuContent>
     </DropdownMenu>
   );

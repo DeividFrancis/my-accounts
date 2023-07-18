@@ -8,7 +8,6 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { MoreHorizontal, Trash, Edit } from "lucide-react";
-import { DialogNewTransaction } from "./DialogNewTransaction";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,13 +17,15 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Button } from "~/components/ui/button";
-import { format } from "date-fns";
-import { prisma } from "~/utils/prisma";
+import { format, parseISO } from "date-fns";
+import TransactionService, {
+  ITransaction,
+} from "~/services/TransactionService";
+import { AlertDeleteTransaction } from "./AlertDeleteTransaction";
+import Link from "next/link";
 
 export async function TableAccounts() {
-  const transactions = await prisma.transaction.findMany({
-    include: { category: true },
-  });
+  const transactions = await TransactionService.fetchAll();
 
   return (
     <>
@@ -36,6 +37,7 @@ export async function TableAccounts() {
             <TableHead>Category</TableHead>
             <TableHead>Date</TableHead>
             <TableHead className="text-right">Amount</TableHead>
+            <TableHead className="w-10">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -45,17 +47,19 @@ export async function TableAccounts() {
                 {transaction.description}
               </TableCell>
               <TableCell>{transaction.category.description}</TableCell>
-              <TableCell>{format(transaction.createdAt, "PPP")}</TableCell>
+              <TableCell>
+                {format(parseISO(transaction.createdAt), "PPP")}
+              </TableCell>
               <TableCell className="text-right">
                 <span
                   data-type={transaction.type}
                   className="data-[type=PAYMENT]:text-red-500 data-[type=RECEIVEMENT]:text-green-500 data-[type=PAYMENT]:before:content-['-']"
                 >
-                  {transaction.amount.toNumber().toFixed(2)}
+                  {transaction.amount}
                 </span>
               </TableCell>
               <TableCell className="text-center">
-                <TableActions />
+                <TableActions transaction={{ id: transaction.id }} />
               </TableCell>
             </TableRow>
           ))}
@@ -65,7 +69,11 @@ export async function TableAccounts() {
   );
 }
 
-function TableActions() {
+function TableActions({
+  transaction,
+}: {
+  transaction: Pick<ITransaction, "id">;
+}) {
   return (
     <>
       <DropdownMenu>
@@ -86,8 +94,10 @@ function TableActions() {
           <DropdownMenuItem className="flex gap-1 items-center">
             <Edit className="w-4 h-4" /> Edit
           </DropdownMenuItem>
-          <DropdownMenuItem className="flex gap-1 items-center text-red-500">
-            <Trash className="w-4 h-4" /> Delete
+          <DropdownMenuItem className="flex gap-1 items-center" asChild>
+            <Link href={`/transaction?remove=${transaction.id}`}>
+              <Trash className="w-4 h-4" /> Delete
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

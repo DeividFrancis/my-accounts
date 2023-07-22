@@ -45,7 +45,9 @@ export function FormNewTransaction() {
         render={({ field }) => (
           <FormItem className="flex flex-col">
             <FormLabel>Date</FormLabel>
-            <DatePickerInput {...field} />
+            <FormControl>
+              <DatePickerInput {...field} />
+            </FormControl>
             <FormMessage />
           </FormItem>
         )}

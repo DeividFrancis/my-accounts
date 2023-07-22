@@ -14,12 +14,17 @@ import {
 } from "~/components/ui/dialog";
 import { Form } from "~/components/ui/form";
 import { FormNewTransaction } from "./FormNewTransaction";
-import { useState, useTransition } from "react";
-import { newTransactionSchema } from "../../app/transaction/schema";
+import { PropsWithChildren, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import TransactionService from "~/services/TransactionService";
+import { TransactionService } from "~/services/TransactionService";
+import { newTransactionSchema } from "~/utils/schema";
+import { TextField } from "./Form/TextField";
+import { NumberField } from "./Form/NumberField";
+import { DateField } from "./Form/DateField";
+import { RadioField } from "./Form/RadioField";
+import { CategoryComboboxField } from "./Form/CategoryComboboxField";
 
-export function DialogNewTransaction() {
+export function DialogNewTransaction({ children }: PropsWithChildren) {
   const methods = useForm({ resolver: zodResolver(newTransactionSchema) });
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -33,8 +38,14 @@ export function DialogNewTransaction() {
       setOpen(false);
     });
   }
+
+  function handleClose(open: boolean) {
+    setOpen(open);
+    methods.reset();
+  }
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogTrigger asChild>
         <Button variant="outline">New transaction</Button>
       </DialogTrigger>
@@ -47,7 +58,14 @@ export function DialogNewTransaction() {
                 Create a new transaction. Click save when youre done.
               </DialogDescription>
             </DialogHeader>
-            <FormNewTransaction />
+            <div className="grid gap-2 py-4">
+              <TextField name="description" label="Description" />
+              {children}
+              <NumberField name="amount" label="Amount" />
+              <DateField name="createdAt" label="Date" />
+              <RadioField name="type" label="Type" />
+              {/* <CategoryComboboxField name="category" label="Category" /> */}
+            </div>
             <DialogFooter>
               <Button
                 type="submit"

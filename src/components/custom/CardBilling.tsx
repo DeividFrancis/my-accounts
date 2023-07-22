@@ -3,7 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
 interface Props {
   title: string;
-  value: string;
+  value?: string;
+  loading?: boolean;
   type: keyof typeof Icons;
 }
 
@@ -13,7 +14,7 @@ const Icons = {
   total: <DollarSign className="text-black dark:text-white" />,
 };
 
-export function CardBilling({ title, value, type }: Props) {
+export function CardBilling({ title, value, loading, type }: Props) {
   return (
     <Card>
       <CardHeader>
@@ -23,7 +24,11 @@ export function CardBilling({ title, value, type }: Props) {
         </div>
       </CardHeader>
       <CardContent>
-        <CardTitle>{value}</CardTitle>
+        {loading ? (
+          <div className="w-32 h-8 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+        ) : (
+          <CardTitle>{value}</CardTitle>
+        )}
       </CardContent>
     </Card>
   );

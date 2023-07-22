@@ -11,7 +11,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
-import TransactionService from "~/services/TransactionService";
+import { TransactionService } from "~/services/TransactionService";
 
 export function AlertDeleteTransaction() {
   const params = useSearchParams();

@@ -18,11 +18,13 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { Button } from "~/components/ui/button";
 import { format, parseISO } from "date-fns";
-import TransactionService, {
+import {
+  TransactionService,
   ITransaction,
 } from "~/services/TransactionService";
 import { AlertDeleteTransaction } from "./AlertDeleteTransaction";
 import Link from "next/link";
+import { USDollar } from "~/utils/format";
 
 export async function TableAccounts() {
   const transactions = await TransactionService.fetchAll();
@@ -55,7 +57,7 @@ export async function TableAccounts() {
                   data-type={transaction.type}
                   className="data-[type=PAYMENT]:text-red-500 data-[type=RECEIVEMENT]:text-green-500 data-[type=PAYMENT]:before:content-['-']"
                 >
-                  {transaction.amount}
+                  {USDollar.format(transaction.amount)}
                 </span>
               </TableCell>
               <TableCell className="text-center">

@@ -1,8 +1,11 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, Suspense } from "react";
 import { AlertDeleteTransaction } from "~/components/custom/AlertDeleteTransaction";
 import { CardBilling } from "~/components/custom/CardBilling";
 import { DialogNewTransaction } from "~/components/custom/DialogNewTransaction";
+import { CategoryComboboxField } from "~/components/custom/Form/CategoryComboboxField";
 import { ModeToggle } from "~/components/ui/mode-toggle";
+import { CardBillings } from "./components/CardBillings";
+import { CardBillingsSkeleton } from "./components/CardBillingsSkeleton";
 
 export default function Layout({ children }: PropsWithChildren) {
   return (
@@ -12,15 +15,15 @@ export default function Layout({ children }: PropsWithChildren) {
           My Accounts
         </h4>
         <div className="flex gap-4 items-center">
-          <DialogNewTransaction />
+          <DialogNewTransaction>
+            <CategoryComboboxField name="categoryId" label="Category" />
+          </DialogNewTransaction>
           <ModeToggle />
         </div>
       </header>
-      <div className="grid grid-cols-3 gap-4">
-        <CardBilling title="For Pay" value="R$ 500,00" type="down" />
-        <CardBilling title="To received" value="R$ 500,00" type="up" />
-        <CardBilling title="Total" value="R$ 500,00" type="total" />
-      </div>
+      <Suspense fallback={<CardBillingsSkeleton />}>
+        <CardBillings />
+      </Suspense>
       <div className="mt-10">
         {children}
         <AlertDeleteTransaction />

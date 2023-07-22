@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
   const data = json;
 
   await prisma.transaction.create({
-    data: { ...data, categoryId: "clk42nxl00000u4r80n9q71ck" },
+    data,
   });
 
   return new Response(null, { status: 201 });

@@ -1,4 +1,5 @@
 import { NewTransactionParams } from "~/utils/schema";
+import { auth } from "@clerk/nextjs";
 
 export type TransactionType = "PAYMENT" | "RECEIVEMENT";
 export interface ITransaction {
@@ -20,9 +21,14 @@ export interface ITransactionStatus {
 }
 
 async function fetchAll() {
+  const { getToken } = auth();
+  const token = await getToken();
   try {
     const req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transaction`, {
       cache: "no-cache",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     const res = await req.json();
 
@@ -33,11 +39,17 @@ async function fetchAll() {
 }
 
 async function fetchStatus() {
+  const { getToken } = auth();
+  const token = await getToken();
+
   try {
     const req = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/transaction/status`,
       {
         cache: "no-cache",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
     const res = await req.json();
@@ -48,10 +60,19 @@ async function fetchStatus() {
   }
 }
 
-async function save(body: NewTransactionParams) {
+async function save({
+  token,
+  body,
+}: {
+  token: string | null;
+  body: NewTransactionParams;
+}) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transaction`, {
     method: "POST",
     body: JSON.stringify(body),
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
 
   return res.ok;

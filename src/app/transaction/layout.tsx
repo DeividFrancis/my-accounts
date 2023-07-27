@@ -6,6 +6,7 @@ import { CategoryComboboxField } from "~/components/custom/Form/CategoryCombobox
 import { ModeToggle } from "~/components/ui/mode-toggle";
 import { CardBillings } from "./components/CardBillings";
 import { CardBillingsSkeleton } from "./components/CardBillingsSkeleton";
+import { UserButton } from "@clerk/nextjs";
 
 export default function Layout({ children }: PropsWithChildren) {
   return (
@@ -19,6 +20,7 @@ export default function Layout({ children }: PropsWithChildren) {
             <CategoryComboboxField name="categoryId" label="Category" />
           </DialogNewTransaction>
           <ModeToggle />
+          <UserButton afterSignOutUrl="/" />
         </div>
       </header>
       <Suspense fallback={<CardBillingsSkeleton />}>

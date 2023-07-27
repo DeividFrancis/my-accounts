@@ -16,6 +16,7 @@ CREATE TABLE "Transaction" (
     "amount" DECIMAL(65,30) NOT NULL,
     "type" "Type" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "clerkUserId" TEXT NOT NULL,
     "categoryId" TEXT NOT NULL,
 
     CONSTRAINT "Transaction_pkey" PRIMARY KEY ("id")

@@ -28,6 +28,7 @@ model Transaction {
   type        Type
   category    Category @relation(fields: [categoryId], references: [id])
   createdAt   DateTime @default(now())
+  clerkUserId String
 
   categoryId String
 }

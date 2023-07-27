@@ -23,8 +23,10 @@ import { NumberField } from "./Form/NumberField";
 import { DateField } from "./Form/DateField";
 import { RadioField } from "./Form/RadioField";
 import { CategoryComboboxField } from "./Form/CategoryComboboxField";
+import { useAuth } from "@clerk/nextjs";
 
 export function DialogNewTransaction({ children }: PropsWithChildren) {
+  const { getToken } = useAuth();
   const methods = useForm({ resolver: zodResolver(newTransactionSchema) });
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -33,7 +35,8 @@ export function DialogNewTransaction({ children }: PropsWithChildren) {
 
   function handleSubmit(data: any) {
     startTransition(async () => {
-      await TransactionService.save(data);
+      const token = await getToken();
+      await TransactionService.save({ token, body: data });
       router.refresh();
       setOpen(false);
     });

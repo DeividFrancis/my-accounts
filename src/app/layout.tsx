@@ -25,7 +25,8 @@ export default function RootLayout({
         variables: {
           colorBackground: "hsl(222.2 84% 4.9%)",
           colorInputBackground: "hsl(222.2 84% 4.9%)",
-          colorPrimary: "hsl(222.2 47.4% 11.2%)",
+          colorPrimary: "white",
+          colorTextOnPrimaryBackground: "hsl(222.2 47.4% 11.2%)",
         },
       }}
     >
